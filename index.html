@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <!---->
+    <base href="/bulltracker/">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Bull Tracker</title>
+
+    <link rel="stylesheet" href="css/bulma.min.css">
+    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="js/scripts.js"></script>
+    <link rel="manifest" href="manifest.json" />
+</head>
+
+<body>    
+    <section class="hero is-primary">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">
+                    <span class="icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </span>
+                    Bull Tracker
+                </h1>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="field">
+                 <div class="control">
+                    <input class="input is-primary is-medium" type="text" id="nome-do-boi" placeholder="Informe o nome do rastreado">
+                </div>
+            </div>
+            <div class="field">
+                <div class="control centered">
+                    <a class="button is-primary is-fullwidth is-medium" id="botao-localizador" value= "ativo" onclick="getLocation()">Localizar</a>
+                </div>
+            </div>
+            <br>
+            <div class="tile is-ancestor">
+                    <div class="tile is-parent">
+                    <article class="tile is-child notification is-info">
+                        <p class="title">Latitude</p>
+                        <p class="subtitle" id="latitude"></p>
+                    </article>
+                    </div>
+                    <div class="tile is-parent">
+                    <article class="tile is-child notification is-info">
+                        <p class="title">Longitude</p>
+                        <p class="subtitle" id="longitude"></p>
+                    </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>Criado por <strong>Inovetech</strong> Automação</p>
+            <a class="button is-warging" id="add-button" style="display:none;">Add APP</a>
+            <a class="button is-warning" id="update-button" style="display:none;">Obter nova versão</a>
+        </div>
+    </footer>
+</body>
+</html>
