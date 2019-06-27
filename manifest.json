@@ -30,5 +30,5 @@
           "sizes": "512x512",
           "type": "image/png"
         }],
-    "start_url": "/bulltracker/index.html"
+    "start_url": "/bulltracker-app/index.html"
 }
