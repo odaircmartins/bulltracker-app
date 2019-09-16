@@ -15,18 +15,46 @@ firebase.initializeApp(config);
 var bullsRef = firebase.database().ref('bulls/')
 var key = 0
 
-function getLocation() {
+let campoAnotacoes = document.querySelector('#anotacoes');
+let fieldAnotacoes = document.querySelector('.anotacoes');
 
-    let botaoLocalizador = document.getElementById("botao-localizador")
-    let latitude = document.getElementById("latitude")
-    let longitude = document.getElementById("longitude")  
-    let nomeDoBoi = document.getElementById("nome-do-boi")
-    let status = botaoLocalizador.innerText
-    
+let botaoRomperColeira = document.querySelector('#botao-coleira');
+let fieldRomperColeira = document.querySelector('.botao-coleira');
+let statusColeira = false;
+botaoRomperColeira.addEventListener('click', romperColeira);
+
+let anotacoes = '';
+let btnSalvarAnotacoes = document.querySelector('#salvar-anotacoes');
+btnSalvarAnotacoes.addEventListener('click', salvarAnotacoes);
+
+function salvarAnotacoes(){
+  anotacoes = campoAnotacoes.value;
+}
+
+function romperColeira() {
+  if(!statusColeira) {
+    statusColeira = true;
+    botaoRomperColeira.innerText = "Restaurar coleira";
+  } else {
+    statusColeira = false;
+    botaoRomperColeira.innerText = "Romper coleira";
+  }
+}
+
+function getLocation() {
+    let botaoLocalizador = document.getElementById("botao-localizador");
+    let latitude = document.getElementById("latitude");
+    let longitude = document.getElementById("longitude");  
+    let nomeDoBoi = document.getElementById("nome-do-boi");
+    let status = botaoLocalizador.innerText;
+        
     if (status == "Localizar"){
         botaoLocalizador.innerText = "Parar"  
+
+        fieldRomperColeira.hidden = false;
+        fieldAnotacoes.hidden = false;
         
-        let register = bullsRef.push({name: nomeDoBoi.value, latitude: 0, longitude: 0, timestamp: 0})
+        let register = bullsRef.push({name: nomeDoBoi.value, latitude: 0, longitude: 0, timestamp: 0, coleiraRompida: statusColeira, anotacoes: anotacoes})
         key = register.key
 
         geoLocalizacao = navigator.geolocation
@@ -40,7 +68,9 @@ function getLocation() {
             currentBullRef.update ({
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude,
-                timestamp: position.timestamp
+                timestamp: position.timestamp,
+                coleiraRompida: statusColeira,
+                anotacoes: anotacoes
             })
 
             teste = currentBullRef
@@ -56,21 +86,11 @@ function getLocation() {
         longitude.innerHTML = ""
         nomeDoBoi.value = ""
         let currentBullRef = firebase.database().ref('bulls/' + key)
-        currentBullRef.remove()
+        currentBullRef.remove();
+        fieldRomperColeira.hidden = true;
+        fieldAnotacoes.hidden = true;
     }
 }
-
-//if ('serviceWorker' in navigator){
-//    console.log('[Application] Run service work scope');
-//    navigator.serviceWorker && navigator.serviceWorker
-//        .register('./bulltracker-service-worker.js')
-//        .then(function(reg){
-//            console.log('[Service worker] Registered with the scope:', reg.scope);
-//        })
-//        .catch(function(err){
-//            console.log('Error to register the Service Worker');
-//        });
-//}
 
 let newWorker;
 
@@ -80,20 +100,23 @@ if ("serviceWorker" in navigator) {
     .then(function(registration) {
       registration.addEventListener("updatefound", () => { // [B]
         // Uma atualização no Service Worker foi encontrada, instalando...
+        console.log("1 - Uma atualização no Service Worker foi encontrada, instalando...");
         newWorker = registration.installing; // [C]
 
         newWorker.addEventListener("statechange", () => {
           // O estado do Service Worker mudou?
+          console.log("2 - O estado do Service Worker mudou?");
           switch (newWorker.state) {
             case "installed": {
               // Existe um novo Service Worker disponível, mostra a notificação
+              console.log("3 - Existe um novo Service Worker disponível, mostra a notificação");
               if (navigator.serviceWorker.controller) {
-                document.getElementById('update-button').style.display = "block"
+                document.getElementById('update-button').style.display = "block";
                 // O evento de clique na notificação
                 document.getElementById("update-button").addEventListener("click", function() {
-                    newWorker.postMessage({ action: "skipWaiting" })
+                    newWorker.postMessage({ action: "skipWaiting" });
                 })  
-                break
+                break;
               }
             }
           }
@@ -101,14 +124,11 @@ if ("serviceWorker" in navigator) {
       });
 
       // SUCESSO - ServiceWorker Registrado
-      console.log(
-        "ServiceWorker registrado com sucesso no escopo: ",
-        registration.scope
-      );
+      console.log("4 - ServiceWorker registrado com sucesso no escopo: ", registration.scope);
     })
     .catch(function(err) {
       // ERRO - Falha ao registrar o ServiceWorker
-      console.log("Falha ao registrar o ServiceWorker: ", err);
+      console.log("5 - Falha ao registrar o ServiceWorker: ", err);
     })
 }
 
@@ -116,7 +136,6 @@ let refreshing;
 
 window.addEventListener('appinstalled', (e) => {
     console.log("APP pode ser instalado");
-    app.logEvent('a2hs', 'installed');
 });
 
 let deferredPrompt;

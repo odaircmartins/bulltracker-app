@@ -1,4 +1,4 @@
-let cacheName = "BullTracker Versão 3.1";
+let cacheName = "BullTracker Versão 4.0";
 let filesToCache = [
     './',
     'index.html',

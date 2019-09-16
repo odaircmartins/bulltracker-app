@@ -10,9 +10,6 @@
     <title>Bull Tracker</title>
 
     <link rel="stylesheet" href="css/bulma.min.css">
-    <script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js"></script>
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    <script src="js/scripts.js"></script>
     <link rel="manifest" href="manifest.json" />
 </head>
 
@@ -22,7 +19,7 @@
             <div class="container">
                 <h1 class="title">
                     <span class="icon">
-                        <i class="fas fa-map-marker-alt"></i>
+                        <i class="fas fa-map-marker-alt"></i>                        
                     </span>
                     Bull Tracker
                 </h1>
@@ -37,6 +34,27 @@
                     <input class="input is-primary is-medium" type="text" id="nome-do-boi" placeholder="Informe o nome do rastreado">
                 </div>
             </div>
+
+            <div class="anotacoes"hidden>
+                <div class="field is-grouped">
+                    <p class="control is-expanded">
+                        <input class="input is-primary is-medium" type="text" id="anotacoes" placeholder="Informe dados de vacinação">
+                    </p>
+                    <p class="control">
+                        <a class="button is-primary is-medium" id="salvar-anotacoes">
+                            <i class="fas fa-save"></i>
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <br>
+            
+            <div class="field botao-coleira" hidden>
+                <div class="control centered">
+                    <a class="button is-warning is-fullwidth is-medium" id="botao-coleira">Romper coleira</a>
+                </div>
+            </div>
+
             <div class="field">
                 <div class="control centered">
                     <a class="button is-primary is-fullwidth is-medium" id="botao-localizador" value= "ativo" onclick="getLocation()">Localizar</a>
@@ -69,4 +87,9 @@
         </div>
     </footer>
 </body>
+
+<script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+<script src="js/scripts.js"></script>
+
 </html>
